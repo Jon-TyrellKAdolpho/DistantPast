@@ -1,22 +1,57 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 public class SaveManager : MonoBehaviour
 {
     [SerializeField] string loadoutGuns;
-    [SerializeField] GameObject player;
-    [SerializeField] bool loadPlayer;
-    [SerializeField] Transform loadPoint;
+    [SerializeField] GameObject playerPrefab;
+    [SerializeField] GameObject playerInputPrefab;
+    [SerializeField] PlayerInputManager manager;
+    int playerCount = 1;
+    List<Transform> spawnPoints = new List<Transform>();
+
     void Start()
     {
-        if (loadPlayer)
-        {
-            PlayerPrefs.SetString("Loadout", loadoutGuns);
-            GameObject playerObject = Instantiate(player);
-            playerObject.transform.position = loadPoint.position;
-            Destroy(gameObject);
-        }
-    }
 
+        playerCount = Mathf.Max(1, PlayerSaves.playerTwo != "" ? 2 : 1, 
+            PlayerSaves.playerThree != "" ? 3 : 1, PlayerSaves.playerFour != "" ? 4 : 1);
+
+        foreach (Transform child in transform)
+        {
+            SpawnPoint spawnpoint = child.GetComponent<SpawnPoint>();
+            if(spawnpoint != null)
+            {
+                spawnPoints.Add(spawnpoint.transform);
+            }
+        }
+        Debug.Log(spawnPoints.Count);
+        for (int i = 0; i < playerCount; i++)
+        {
+            Spawn(i);
+        }
+        for (int i = 0; i < playerCount; i++)
+        {
+            GameObject playerInput = Instantiate(playerInputPrefab);
+        }
+
+    }
+    public void Spawn(int which)
+    {
+        Transform spawnpoint = SpawnPoint();
+        GameObject playerprefab = Instantiate(playerPrefab, spawnpoint);
+        KeaPlayer player = playerprefab.GetComponent<KeaPlayer>();
+        playerprefab.transform.SetParent(null);
+        player.SetPlayerName(which);
+
+    }
+    public Transform SpawnPoint()
+    {
+        int which = Random.Range(0, spawnPoints.Count);
+        return spawnPoints[which];
+    }
+    /*
     public void SaveGame()
     {
         Health playerhealth = KeaPlayer.instance.GetComponent<Health>();
@@ -177,6 +212,6 @@ public class SaveManager : MonoBehaviour
         cannon.damage = PlayerPrefs.GetInt("CannonDmage");
         cannon.energyPerShot = PlayerPrefs.GetFloat("CannonPerShot");
     }
-
+   */
    
 }

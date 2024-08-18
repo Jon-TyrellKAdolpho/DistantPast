@@ -4,17 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 public class GunManager : MonoBehaviour
 {
-    public List<GameObject> guns;
+
+    //[HideInInspector]
+    KeaPlayer player;
+    public List<Gun> guns;
     [SerializeField] List<Image> gunImages;
     [SerializeField] int current;
     [SerializeField] GameObject soundPrefab;
 
-    [SerializeField] Camera mainCam;
-    [SerializeField] GameObject gunDisplay;
     [SerializeField] SettingsHandler settingsHandler;
 
     public bool aiming;
-    [SerializeField] GameObject crossHair;
 
     public KeyCode shootKey = KeyCode.Mouse0;
     public KeyCode aimKey = KeyCode.Mouse1;
@@ -31,9 +31,21 @@ public class GunManager : MonoBehaviour
 
     public Transform target;
     bool first;
+
+    bool shooting;
     private void Awake()
     {
+        player = GetComponentInParent<KeaPlayer>();
         target.SetParent(null);
+        guns = new List<Gun>();
+        foreach (Transform child in transform)
+        {
+            if(child.GetComponent<Gun>() != null)
+            {
+                guns.Add(child.GetComponent<Gun>());
+            }
+        }
+
         if (!PlayerPrefs.HasKey(guns[0].name + "Locked"))
         {
             Loadout();
@@ -44,18 +56,18 @@ public class GunManager : MonoBehaviour
 
             if(PlayerPrefs.GetInt(guns[i].name + "Locked") == 0)
             {
-                if(guns[i].GetComponent<Gun>() != null)
+                if(guns[i] != null)
                 {
                     Debug.Log("Unlocked " + guns[i].name);
-                    guns[i].GetComponent<Gun>().Unlock();
+                    guns[i].Unlock();
                 }
 
             }
             else
             {
-                if (guns[i].GetComponent<Gun>() != null)
+                if (guns[i] != null)
                 {
-                    guns[i].GetComponent<Gun>().Lock();
+                    guns[i].Lock();
                 }
             }
         }
@@ -63,15 +75,67 @@ public class GunManager : MonoBehaviour
         CycleWeapon();
         CycleWeapon();
     }
+
+    float timer = 0f;
+    float interval;
+    int currentShot;
+    private void Update()
+    {
+        if (shooting)
+        {
+            timer += Time.deltaTime;
+
+            while (timer >= interval)
+            {
+                guns[current].Shoot();
+                if (guns[current].type == 1)
+                {
+
+                    currentShot += 1;
+                    if(currentShot >= guns[current].shotCount)
+                    {
+                        FinnishedShot();
+                    }
+                }
+
+                timer -= interval;
+            }
+        }
+
+    }
+    void FinnishedShot()
+    {
+        currentShot = 0;
+        shooting = false;
+    }
+    public void TryShoot()
+    {
+        if(guns[current].type == 0)
+        {
+            guns[current].Shoot();
+            return;
+        }
+        if(guns[current].type == 1 || guns[current].type == 2)
+        {
+            interval = 1 / guns[current].fireRate;
+            shooting = true;
+
+        }
+    }
+    public void TryStopShoot()
+    {
+        if (guns[current].type == 2)
+        {
+            shooting = false;
+        }
+    }
     public void UnlockGun(string value)
     {
-        Debug.Log(value);
         for (int i = 0; i < guns.Count; i++)
         {
             if(guns[i].name == value)
             {
-                Debug.Log("Hey!");
-                guns[i].GetComponent<Gun>().Unlock();
+                guns[i].Unlock();
             }
         }
     }
@@ -86,7 +150,7 @@ public class GunManager : MonoBehaviour
         {
             first = true;
         }
-        if(guns[which].GetComponent<Gun>().locked == true)
+        if(guns[which].locked == true)
         {
             return;
         }
@@ -94,21 +158,20 @@ public class GunManager : MonoBehaviour
         {
             if(i == which)
             {
-                guns[i].SetActive(true);
-                Gun gun = guns[i].GetComponent<Gun>();
+                guns[i].gameObject.SetActive(true);
+                Gun gun = guns[i];
                 current = i;
                 gun.gunImage.color = new Vector4(1, 1, 1, 1);
             }
             else
             {
-                Gun gun = guns[i].GetComponent<Gun>();
+                Gun gun = guns[i];
                 if(gun != null)
                 {
-                    guns[i].GetComponent<Gun>().gunImage.color = new Vector4(1, 1, 1, .5f);
-                    gun.canShoot = false;
+                    guns[i].gunImage.color = new Vector4(1, 1, 1, .5f);
                 }
 
-                guns[i].SetActive(false);
+                guns[i].gameObject.SetActive(false);
             }
         }
     }
@@ -117,13 +180,11 @@ public class GunManager : MonoBehaviour
         ExitAim();
         if (guns.Count == 0)
         {
-            // Handle the case where there are no weapons available
             Debug.Log("No weapons available.");
             return;
         }
         Gun gun = null;
-        Cannon cannon = null;
-        int maxAttempts = guns.Count; // Set a maximum number of attempts
+        int maxAttempts = guns.Count; 
 
         for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
@@ -133,19 +194,9 @@ public class GunManager : MonoBehaviour
                 current = 0;
             }
 
-            gun = guns[current].GetComponent<Gun>();
-            cannon = guns[current].GetComponent<Cannon>();
+            gun = guns[current];
 
             if (gun != null && gun.energy.currentEnergy > 0 && gun.locked == false)
-            {
-                if (first != false)
-                {
-                    Instantiate(soundPrefab, transform.position, Quaternion.identity);
-                }
-                SelectGun(current);
-                return;
-            }
-            else if (cannon != null && cannon.energy.currentEnergy > 0 && cannon.locked == false)
             {
                 if (first != false)
                 {
@@ -161,19 +212,10 @@ public class GunManager : MonoBehaviour
         {
             current = 0;
         }
-        gun = guns[current].GetComponent<Gun>();
+        gun = guns[current];
         if (gun != null)
         {
             if (gun.locked == true)
-            {
-                CycleWeapon();
-                return;
-            }
-        }
-        cannon = guns[current].GetComponent<Cannon>();
-        if (cannon != null)
-        {
-            if (cannon.locked == true)
             {
                 CycleWeapon();
                 return;
@@ -185,104 +227,28 @@ public class GunManager : MonoBehaviour
         }
         SelectGun(current);
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(cycleKey))
-        {
-            CycleWeapon();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            if(guns[0].GetComponent<Gun>().locked != true)
-            {
-                SelectGun(0);
-            }
 
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (guns[0].GetComponent<Gun>().locked != true)
-            {
-                SelectGun(1);
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            if (guns[0].GetComponent<Gun>().locked != true)
-            {
-                SelectGun(2);
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            if (guns[0].GetComponent<Gun>().locked != true)
-            {
-                SelectGun(3);
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            if (guns[0].GetComponent<Gun>().locked != true)
-            {
-                SelectGun(4);
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            if (guns[0].GetComponent<Gun>().locked != true)
-            {
-                SelectGun(5);
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            if (guns[0].GetComponent<Gun>().locked != true)
-            {
-                SelectGun(6);
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            if (guns[0].GetComponent<Gun>().locked != true)
-            {
-                SelectGun(7);
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            if (guns[0].GetComponent<Gun>().locked != true)
-            {
-                SelectGun(8);
-            }
-        }
-
-        if (Input.GetKeyDown(aimKey))
-        {
-            Aim();
-        }
-
-    }
     public void Aim()
     {
         aiming = !aiming;
         if (aiming)
         {
-            crossHair.SetActive(false);
-            gunDisplay.SetActive(false);
-            Gun gun = guns[current].GetComponent<Gun>();
+            player.GetCrossHairMain().SetActive(false);
+            player.GetGunDisplay().gameObject.SetActive(false);
+            Gun gun = guns[current];
             gun.SetAngle(false);
-            mainCam.fieldOfView = gun.aimFOV;
-            if(gun.retroScope != null)
-            {
-                if (settingsHandler.retro)
-                {
-                    gun.retroScope.SetActive(true);
-                }
-                else
-                {
-                    gun.hdScope.SetActive(true);
-                }
-            }
+            player.GetMainCamera().fieldOfView = gun.aimFOV;
+         //   if(gun.retroScope != null)
+       //     {
+         //       if (settingsHandler.retro)
+         //       {
+          //          gun.retroScope.SetActive(true);
+       //         }
+      //          else
+      //          {
+         //           gun.hdScope.SetActive(true);
+       //         }
+    //        }
         }
         else
         {
@@ -291,34 +257,28 @@ public class GunManager : MonoBehaviour
     }
     public void ExitAim()
     {
-        crossHair.SetActive(true);
+        player.GetCrossHairMain().SetActive(true);
         aiming = false;
-        gunDisplay.SetActive(true);
-        mainCam.fieldOfView = settingsHandler.mainFOV;
-        Gun gun = guns[current].GetComponent<Gun>();
+        player.GetGunDisplay().gameObject.SetActive(true);
+        player.GetMainCamera().fieldOfView = settingsHandler.mainFOV;
+        Gun gun = guns[current];
         gun.SetAngle(true);
-        if(gun.retroScope != null)
-        {
-            gun.retroScope.SetActive(false);
-            gun.hdScope.SetActive(false);
-        }
-
-
+        player.OffScopes();
     }
     public void CheckRetro()
     {
         if (aiming)
         {
-            Gun gun = guns[current].GetComponent<Gun>();
+            Gun gun = guns[current];
             if (settingsHandler.retro)
             {
-                gun.hdScope.SetActive(false);
-                gun.retroScope.SetActive(true);
+             //   gun.hdScope.SetActive(false);
+             //   gun.retroScope.SetActive(true);
             }
             else
             {
-                gun.hdScope.SetActive(true);
-                gun.retroScope.SetActive(false);
+              //  gun.hdScope.SetActive(true);
+              //  gun.retroScope.SetActive(false);
             }
         }
     }
@@ -329,7 +289,7 @@ public class GunManager : MonoBehaviour
         GunManager gunManager = FindObjectOfType<GunManager>();
         foreach (string weapon in weaponArray)
         {
-            Debug.Log("Hey!");
+    
             gunManager.UnlockGun(weapon);
         }
         CycleWeapon();

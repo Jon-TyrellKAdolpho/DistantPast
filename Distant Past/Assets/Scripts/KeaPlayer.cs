@@ -5,16 +5,32 @@ using UnityEngine.UI;
 using TMPro;
 public class KeaPlayer : MonoBehaviour
 {
-    public static KeaPlayer instance;
-    [SerializeField] Slider healthSlider;
-    [SerializeField] GameObject canvas;
+    string playerName;
+
+    [SerializeField] Camera mainCam;
+    [SerializeField] Camera gunCam;
+
+    RawImage mainDisplay;
+    RawImage gunDisplay;
+    GameObject crossHairMain;
+    RenderTexture mainText;
+    RenderTexture gunText;
+    RenderTexture mainTextRetro;
+    RenderTexture gunTextRetro;
+    bool retro;
+    List<GameObject> scopes;
+
     Health playerHealth;
-    public Energy blue;
-    public Energy yellow;
-    public Energy green;
+    Slider healthSlider;
+    Energy blueEnergy;
+    Energy yellowEnergy;
+    Energy greenEnergy;
+
+    Slider expSlider;
+    TextMeshProUGUI expInfo;
     [SerializeField] GameObject levelUpSoundDrop;
-    [SerializeField] Slider expSlider;
-    [SerializeField] TextMeshProUGUI expInfo;
+
+
     public int spendPoints;
     public int[] expToNextLevel;
     public int currentLevel;
@@ -22,12 +38,11 @@ public class KeaPlayer : MonoBehaviour
     int maxLevel = 50;
     private void Awake()
     {
-        instance = this;
+        FindObjectOfType<Display>().AddPlayer(this);
 
         playerHealth = GetComponent<Health>();
         healthSlider.maxValue = playerHealth.maxHealth;
         healthSlider.value = playerHealth.currentHealth;
-        canvas.transform.SetParent(null);
 
         expToNextLevel = new int[maxLevel];
         expToNextLevel[1] = 1000;
@@ -40,12 +55,58 @@ public class KeaPlayer : MonoBehaviour
         expSlider.value = currentExp;
         expInfo.text = "LVL: " + currentLevel + " / EXP: " + Mathf.RoundToInt(currentExp);
     }
+    public void SetDisplay(Slider health, Energy blue, Energy yellow, Energy green, Slider expslider, TextMeshProUGUI expinfo,
+        RenderTexture maintext, RenderTexture guntext, RenderTexture maintextretro, RenderTexture guntextretro,RawImage maindisplay,  RawImage gundisplay, GameObject crosshair, List<GameObject> scopelist)
+    {
+        healthSlider = health; blueEnergy = blue; yellowEnergy = yellow; greenEnergy = green; expSlider = expslider; expInfo = expinfo;
+        mainText = maintext; gunText = guntext; mainTextRetro = maintextretro; gunTextRetro = guntextretro;mainDisplay = maindisplay; gunDisplay = gundisplay; 
+        crossHairMain = crosshair; scopes = new List<GameObject>(scopelist);
 
+        if (retro)
+        {
+            mainCam.targetTexture = mainTextRetro;
+            gunCam.targetTexture = gunTextRetro;
+            maindisplay.texture = mainTextRetro;
+            gundisplay.texture = gunTextRetro;
+        }
+        else
+        {
+            mainCam.targetTexture = mainText;
+            gunCam.targetTexture = gunText;
+            mainDisplay.texture = mainText;
+            gunDisplay.texture = gunText;
+        }
+    }
+    public string GetPlayerName()
+    {
+        string name = new string(playerName);
+        return name;
+    }
+    public void SetPlayerName(int which)
+    {
+        playerName = which == 0 ? PlayerSaves.playerOne : which == 1 ? PlayerSaves.playerTwo 
+            : which == 2 ? PlayerSaves.playerThree : PlayerSaves.playerFour;
+    }
+    public Camera GetMainCamera()
+    {
+        return mainCam;
+    }
+    public RawImage GetGunDisplay()
+    {
+        return gunDisplay;
+    }
+    public GameObject GetCrossHairMain()
+    {
+        return crossHairMain;
+    }
     public void SetHealthSlider()
     {
         healthSlider.value = playerHealth.currentHealth;
     }
-
+    public void OffScopes()
+    {
+        //turn off all scopes
+    }
     public void GainExp(int value)
     {
         StartCoroutine(GainExpCoroutine(value));

@@ -23,7 +23,7 @@ public class CheckPoint : MonoBehaviour
         PlayerPrefs.SetString("LastLevel", levelName);
         PlayerPrefs.SetInt("CheckPointReached" + checkPointName, 1);
         PlayerPrefs.SetString("LastCheckPoint" + levelName, checkPointName);
-        FindObjectOfType<SaveManager>().SaveGame();
+        //FindObjectOfType<SaveManager>().SaveGame();
         onCheckPoint.Invoke();
     }
     

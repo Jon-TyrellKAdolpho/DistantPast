@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FirstPersonMovement : MonoBehaviour
 {
+    [SerializeField] int playerIndex;
+
     [SerializeField] LayerMask ceilingMask;
     [SerializeField] LayerMask groundMask;
 
@@ -51,7 +53,7 @@ public class FirstPersonMovement : MonoBehaviour
     float horizontal;
     public float vertical;
 
-
+  
     void Awake()
     {
         originalWalkSpeed = walkSpeed;
@@ -76,6 +78,30 @@ public class FirstPersonMovement : MonoBehaviour
     private void Start()
     {
         movementSound = GetComponentInChildren<MovementSound>();
+    }
+    public int GetPlayerIndex()
+    {
+        return playerIndex;
+    }
+    public void SetVertical(float value)
+    {
+        vertical = value;
+    }
+    public void SetHorizontal(float value)
+    {
+        horizontal = value;
+    }
+
+    public void SetSprint(int value)
+    {
+        if(value == 0)
+        {
+            sprinting = false;
+        }
+        else
+        {
+            sprinting = true;
+        }
     }
     void Update()
     {
@@ -128,12 +154,6 @@ public class FirstPersonMovement : MonoBehaviour
             controller.stepOffset = stepOffset;
         }
 
-        vertical = Input.GetKey(forwardKey) ? 1 : 0;
-        if(vertical != 1) {vertical = Input.GetKey(backwardKey) ? -1 : 0;}
-
-        horizontal = Input.GetKey(rightKey) ? 1 : 0;
-        if (horizontal != 1) {horizontal = Input.GetKey(leftKey) ? -1 : 0;}
-
 
 
         Vector2 coordinates = new Vector2(horizontal, vertical);
@@ -146,17 +166,15 @@ public class FirstPersonMovement : MonoBehaviour
             movement = transform.right * coordinates.x + lookTransform.forward * coordinates.y;
         }
 
-
-        if (Input.GetKeyDown(sprintKey))
+        if (sprinting)
         {
             trueSpeed = sprintSpeed;
-            sprinting = true;
         }
-        if (Input.GetKeyUp(sprintKey))
+        else
         {
             trueSpeed = walkSpeed;
-            sprinting = false;
         }
+
 
 
         if (swimming != true)
@@ -168,14 +186,7 @@ public class FirstPersonMovement : MonoBehaviour
             controller.Move(movement * Mathf.CeilToInt(trueSpeed / swimDivider) * Time.deltaTime);
         }
 
-        if (Input.GetKeyDown(jumpKey))
-        {
-            Jump();
-        }
-        if (Input.GetKeyDown(crouchKey) && swimming != true)
-        {
-            ChangeHeight();
-        }
+
         if(velocity.y > -25)
         {
             velocity.y += trueGravity * Time.deltaTime;
@@ -206,6 +217,10 @@ public class FirstPersonMovement : MonoBehaviour
     }
     public void ChangeHeight()
     {
+        if (swimming)
+        {
+            return;
+        }
         if(heightState == heightSettings.Count - 1)
         {
             heightIncrease = false;

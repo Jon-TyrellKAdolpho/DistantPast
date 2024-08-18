@@ -24,7 +24,7 @@ public class HealthKit : MonoBehaviour
             if(player.GetComponent<Health>().currentHealth >= player.GetComponent<Health>().maxHealth)
             {
                 int trueGive = Mathf.RoundToInt(Random.Range(expGiveAmount.x, expGiveAmount.y));
-                KeaPlayer.instance.GainExp(trueGive);
+                //KeaPlayer.instance.GainExp(trueGive);
 
             }
             else

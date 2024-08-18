@@ -7,13 +7,11 @@ public class Gun : MonoBehaviour
     [SerializeField] GunManager manager;
     public Image gunImage;
     public bool locked;
-    [HideInInspector]
-    public bool canShoot;
-    [SerializeField] int type;
-    [SerializeField] float fireRate = .125f;
-    float trueFireRate;
-    [SerializeField] int perShot = 3;
-    int truePerShot;
+
+    public int type;
+    public int shotCount;
+    [Tooltip("1 - 60 for how many shoots per second")]
+    public float fireRate;
     public Energy energy;
     Transform cam;
 
@@ -32,8 +30,8 @@ public class Gun : MonoBehaviour
     [SerializeField] GameObject hitEffect;
     [SerializeField] GameObject soundPrefab;
 
-    public GameObject retroScope;
-    public GameObject hdScope;
+    public int retroScope;
+    public int hdScope;
     // Start is called before the first frame update
     Transform target;
     private void Start()
@@ -45,86 +43,7 @@ public class Gun : MonoBehaviour
         shapemodule.angle = baseAngle;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        FireWeapon();
-    }
-    public void FireWeapon()
-    {
-        if (locked != true && PauseHandler.instance.isPaused != true)
-        {
-            if (type == 0)
-            {
-                HandleBasicShooting();
-            }
-            if (type == 1)
-            {
-                HandleAutoShooting();
-            }
-            if (type == 2)
-            {
-                HandleSemiAutoShooting();
-            }
-
-        }
-    }
-    void HandleBasicShooting()
-    {
-        if (Input.GetKeyDown(manager.shootKey))
-        {
-            Shoot();
-        }
-    }
-    void HandleAutoShooting()
-    {
-        if (Input.GetKeyDown(manager.shootKey))
-        {
-            canShoot = true;
-        }
-        if (Input.GetKeyUp(manager.shootKey))
-        {
-            canShoot = false;
-        }
-        if (canShoot == true)
-        {
-            trueFireRate -= Time.deltaTime;
-            if (trueFireRate <= 0)
-            {
-                Shoot();
-                trueFireRate = fireRate;
-            }
-        }
-    }
-    void HandleSemiAutoShooting()
-    {
-        if (Input.GetKeyDown(manager.shootKey))
-        {
-            canShoot = true;
-            truePerShot = perShot;
-        }
-        if (Input.GetKeyUp(manager.shootKey))
-        {
-            canShoot = false;
- 
-        }
-        if (canShoot == true)
-        {
-            trueFireRate -= Time.deltaTime;
-            if (trueFireRate <= 0)
-            {
-                Shoot();
-                trueFireRate = fireRate;
-                truePerShot--;
-            }
-        }
-        if(truePerShot <= 0)
-        {
-            canShoot = false;
-        }
-    }
-
-    void Shoot()
+    public void Shoot()
     {
         if(energy.trueRechargeTime > 0)
         {
@@ -150,7 +69,6 @@ public class Gun : MonoBehaviour
             bullet.GetComponent<Bullet>().SetDamage(damage);
         }
         bullet.transform.LookAt(target);
-       // bullet.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         bullet.Play();
 
         GameObject soundobject = Instantiate(soundPrefab);
@@ -182,4 +100,5 @@ public class Gun : MonoBehaviour
         }
 
     }
+
 }

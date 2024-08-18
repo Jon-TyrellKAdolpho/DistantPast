@@ -13,6 +13,7 @@ public class GunDrop : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        /*
         if (other.GetComponent<KeaPlayer>())
         {
             GunManager gunManager = other.GetComponentInChildren<GunManager>();
@@ -31,5 +32,6 @@ public class GunDrop : MonoBehaviour
             Instantiate(soundDrop, transform.position, Quaternion.identity);
             Destroy(gameObject.GetComponentInParent<Spin>().gameObject);
         }
+        */
     }
 }

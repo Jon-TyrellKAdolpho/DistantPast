@@ -10,6 +10,7 @@ public class Battery : MonoBehaviour
     [SerializeField] Vector2 expGiveAmount;
     private void OnTriggerEnter(Collider other)
     {
+        /*
         if (other.CompareTag("Player"))
         {
             Energy energy = null;
@@ -46,6 +47,7 @@ public class Battery : MonoBehaviour
 
             Destroy(gameObject.GetComponentInParent<Spin>().gameObject);
         }
+        */
     }
 
 }

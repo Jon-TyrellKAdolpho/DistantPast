@@ -10,7 +10,7 @@ public class BatteryDrop : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-
+        /*
         KeaPlayer player = KeaPlayer.instance;
         if (player.blue.active == true)
         {
@@ -35,5 +35,6 @@ public class BatteryDrop : MonoBehaviour
         }
 
         Destroy(gameObject);
+        */
     }
 }

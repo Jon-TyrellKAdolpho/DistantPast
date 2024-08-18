@@ -18,7 +18,9 @@ public class ExpGiver : MonoBehaviour
 
     public void GiveExp()
     {
+        /*
         int trueGive = Mathf.RoundToInt(Random.Range(expToGive.x, expToGive.y));
         KeaPlayer.instance.GainExp(trueGive);
+        */
     }
 }

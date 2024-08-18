@@ -11,7 +11,7 @@ public class ShieldEnemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = KeaPlayer.instance.transform;
+      //  player = KeaPlayer.instance.transform;
     }
 
     // Update is called once per frame

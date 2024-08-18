@@ -22,8 +22,8 @@ public class CheckPointManager : MonoBehaviour
                     Destroy(checkPoints[j].gameObject);
                 }
                 checkPoints[i].onCheckPointLoad.Invoke();
-                FindObjectOfType<SaveManager>().LoadGame();
-                KeaPlayer.instance.transform.position = checkPoints[i].spawnPoint.position;
+                //FindObjectOfType<SaveManager>().LoadGame();
+//KeaPlayer.instance.transform.position = checkPoints[i].spawnPoint.position;
                 break;
             }
         }

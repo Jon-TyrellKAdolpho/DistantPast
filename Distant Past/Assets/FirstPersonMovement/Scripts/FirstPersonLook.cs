@@ -34,22 +34,29 @@ public class FirstPersonLook : MonoBehaviour
         StartCoroutine(CheckFramerate());
         StartCoroutine(SetSensitivity());
     }
-
+    public void SetMouseX(float value)
+    {
+        mouseX = value * (mouseSensitivity / frameRate);
+    }
+    public void SetMouseY(float value)
+    {
+        mouseY = value * (mouseSensitivity / frameRate);
+    }
     void Update()
     {
         
         if(PauseHandler.instance.isPaused != true)
         {
             frameCount++;
-            if (Input.GetAxis("Mouse X") == 0 && Input.GetAxis("Mouse Y") == 0)
+            if (mouseX == 0 && mouseY == 0)
             {
                 set = true;
             }
             if (set)
             {
                 frameRate = 1f / Time.deltaTime;
-                mouseX = Input.GetAxis("Mouse X") * (mouseSensitivity/ frameRate);// mouseSensitivity; //GetAdjustedSensitivity();// * Time.fixedDeltaTime;
-                mouseY = Input.GetAxis("Mouse Y") * (mouseSensitivity/ frameRate);// mouseSensitivity;// GetAdjustedSensitivity();// * Time.fixedDeltaTime;
+            //    mouseX = Input.GetAxis("Mouse X") * (mouseSensitivity/ frameRate);// mouseSensitivity; //GetAdjustedSensitivity();// * Time.fixedDeltaTime;
+            //    mouseY = Input.GetAxis("Mouse Y") * (mouseSensitivity/ frameRate);// mouseSensitivity;// GetAdjustedSensitivity();// * Time.fixedDeltaTime;
 
                 xRotation -= mouseY;
                 if (xRotation > 90f)

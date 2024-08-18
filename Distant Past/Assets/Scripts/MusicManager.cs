@@ -96,7 +96,7 @@ public class MusicManager : MonoBehaviour
         if (targetVolume == 1)
         {
             play = true;
-            Debug.Log("Playing audio source: " + audioSource.clip.name);
+           // Debug.Log("Playing audio source: " + audioSource.clip.name);
             audioSource.Play();
         }
         float startVolume = audioSource.volume;

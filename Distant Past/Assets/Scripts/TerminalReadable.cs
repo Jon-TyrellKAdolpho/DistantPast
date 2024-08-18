@@ -9,7 +9,7 @@ public class TerminalReadable : MonoBehaviour
     bool read;
     [SerializeField] Vector2 expGive;
     public void ReadLog()
-    {
+    {/*
         KeaPlayer.instance.GetComponentInChildren<TerminalReader>().NewLog(log);
         if(read != true)
         {
@@ -20,5 +20,6 @@ public class TerminalReadable : MonoBehaviour
 
             read = true;
         }
+        */
     }
 }

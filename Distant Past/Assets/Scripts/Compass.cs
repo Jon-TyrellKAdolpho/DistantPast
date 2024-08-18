@@ -8,7 +8,7 @@ public class Compass : MonoBehaviour
     [SerializeField] Transform compass;
     void Start()
     {
-        target = KeaPlayer.instance.transform;
+    //    target = KeaPlayer.instance.transform;
     }
 
     // Update is called once per frame

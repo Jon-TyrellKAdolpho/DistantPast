@@ -35,7 +35,7 @@ public class HackingGame : MonoBehaviour
     {
         if (expGive.x > 0 && expGive.y > 0)
         {
-            KeaPlayer.instance.GainExp(Mathf.RoundToInt(Random.Range(expGive.x, expGive.y)));
+          //  KeaPlayer.instance.GainExp(Mathf.RoundToInt(Random.Range(expGive.x, expGive.y)));
         }
     }
 }

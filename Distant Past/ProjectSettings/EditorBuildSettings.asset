@@ -20,13 +20,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MultiPlayer/Lobby.unity
     guid: 04c07c16325467d4080d7d0e32395471
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/Level1After.unity
     guid: 86374289cf4014e4486c4419aef58bdc
   - enabled: 1
+    path: Assets/Scenes/MultiPlayer/HighNoon.unity
+    guid: e4ac5d06e000d564ba8419ea4282423a
+  - enabled: 1
     path: Assets/Scenes/LoseScene.unity
     guid: ccf25a685fc44b5489b7613a57915bca
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 293a43d8e95fd6c41913d84ceeb6c65a, type: 2}

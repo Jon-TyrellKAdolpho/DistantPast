@@ -22,7 +22,7 @@ public class Energy : MonoBehaviour
         energySlider = GetComponent<Slider>();
         energySlider.maxValue = maxEnergy;
         energySlider.value = currentEnergy;
-        Check();
+      //  Check();
     }
 
     public void Check()

@@ -25,6 +25,7 @@ public class PickUp : MonoBehaviour
     
     private void Update()
     {
+        /*
         if(target == null && KeaPlayer.instance != null)
         {
             target = KeaPlayer.instance.transform;
@@ -37,6 +38,6 @@ public class PickUp : MonoBehaviour
             propertyBlock.SetColor("_Color", lerpedColor);
             rend.SetPropertyBlock(propertyBlock);
         }
-
+        */
     }
 }
