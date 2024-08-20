@@ -40,7 +40,7 @@ public class Bullet : MonoBehaviour
             Vector3 hitPoint = collisionEvents[i].intersection;
             Vector3 hitNormal = collisionEvents[i].normal;
             Instantiate(prefab, hitPoint, Quaternion.LookRotation(hitNormal));
-            Debug.Log("Hit at " + hitPoint.ToString());
+         //   Debug.Log("Hit at " + hitPoint.ToString());
         }
     }
     

@@ -24,10 +24,6 @@ public class MusicManager : MonoBehaviour
     }
     void PlayMusic()
     {
-        if (PauseHandler.instance.isPaused)
-        {
-            return;
-        }
         if (!enemiesDetected && ambient.volume == 0)
         {
             if(quedAmbientClip != null)

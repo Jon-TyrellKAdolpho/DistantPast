@@ -8,11 +8,13 @@ public class GunManager : MonoBehaviour
     //[HideInInspector]
     KeaPlayer player;
     public List<Gun> guns;
-    [SerializeField] List<Image> gunImages;
+    public List<Image> scopeImages;
     [SerializeField] int current;
     [SerializeField] GameObject soundPrefab;
 
-    [SerializeField] SettingsHandler settingsHandler;
+    public Energy blue;
+    public Energy yellow;
+    public Energy green;
 
     public bool aiming;
 
@@ -161,16 +163,10 @@ public class GunManager : MonoBehaviour
                 guns[i].gameObject.SetActive(true);
                 Gun gun = guns[i];
                 current = i;
-                gun.gunImage.color = new Vector4(1, 1, 1, 1);
             }
             else
             {
                 Gun gun = guns[i];
-                if(gun != null)
-                {
-                    guns[i].gunImage.color = new Vector4(1, 1, 1, .5f);
-                }
-
                 guns[i].gameObject.SetActive(false);
             }
         }
@@ -196,7 +192,11 @@ public class GunManager : MonoBehaviour
 
             gun = guns[current];
 
-            if (gun != null && gun.energy.currentEnergy > 0 && gun.locked == false)
+            // Make sure energy isn't depleted.
+            if ((gun.energy == 0 && blue.currentEnergy <= 0) || (gun.energy == 1 &&
+                yellow.currentEnergy <= 0) || (gun.energy == 2 && green.currentEnergy <= 0)) return;
+
+            if (gun != null && gun.locked == false)
             {
                 if (first != false)
                 {
@@ -238,17 +238,7 @@ public class GunManager : MonoBehaviour
             Gun gun = guns[current];
             gun.SetAngle(false);
             player.GetMainCamera().fieldOfView = gun.aimFOV;
-         //   if(gun.retroScope != null)
-       //     {
-         //       if (settingsHandler.retro)
-         //       {
-          //          gun.retroScope.SetActive(true);
-       //         }
-      //          else
-      //          {
-         //           gun.hdScope.SetActive(true);
-       //         }
-    //        }
+            scopeImages[gun.hdScope].gameObject.SetActive(true);
         }
         else
         {
@@ -260,26 +250,19 @@ public class GunManager : MonoBehaviour
         player.GetCrossHairMain().SetActive(true);
         aiming = false;
         player.GetGunDisplay().gameObject.SetActive(true);
-        player.GetMainCamera().fieldOfView = settingsHandler.mainFOV;
+        player.GetMainCamera().fieldOfView = 60f;
         Gun gun = guns[current];
         gun.SetAngle(true);
-        player.OffScopes();
+        for (int i = 0; i < scopeImages.Count; i++)
+        {
+            scopeImages[i].gameObject.SetActive(false);
+        }
     }
     public void CheckRetro()
     {
         if (aiming)
         {
             Gun gun = guns[current];
-            if (settingsHandler.retro)
-            {
-             //   gun.hdScope.SetActive(false);
-             //   gun.retroScope.SetActive(true);
-            }
-            else
-            {
-              //  gun.hdScope.SetActive(true);
-              //  gun.retroScope.SetActive(false);
-            }
         }
     }
     public void Loadout()

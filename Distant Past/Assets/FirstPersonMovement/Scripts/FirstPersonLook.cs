@@ -19,7 +19,6 @@ public class FirstPersonLook : MonoBehaviour
 
     private float updateInterval = 0.5f; // Update interval in seconds
     private float timeSinceLastUpdate = 0.0f;
-    [SerializeField] PauseHandler pauseHandler;
     [SerializeField] float frameRate;
     void Start()
     {
@@ -44,52 +43,37 @@ public class FirstPersonLook : MonoBehaviour
     }
     void Update()
     {
-        
-        if(PauseHandler.instance.isPaused != true)
+        frameCount++;
+        if (mouseX == 0 && mouseY == 0)
         {
-            frameCount++;
-            if (mouseX == 0 && mouseY == 0)
-            {
-                set = true;
-            }
-            if (set)
-            {
-                frameRate = 1f / Time.deltaTime;
-            //    mouseX = Input.GetAxis("Mouse X") * (mouseSensitivity/ frameRate);// mouseSensitivity; //GetAdjustedSensitivity();// * Time.fixedDeltaTime;
-            //    mouseY = Input.GetAxis("Mouse Y") * (mouseSensitivity/ frameRate);// mouseSensitivity;// GetAdjustedSensitivity();// * Time.fixedDeltaTime;
-
-                xRotation -= mouseY;
-                if (xRotation > 90f)
-                {
-                    xRotation = 90f;
-                }
-                else if (xRotation < -90f)
-                {
-                    xRotation = -90f;
-                }
-
-                transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-                playerBody.Rotate(Vector3.up * mouseX);
-            }
-
+            set = true;
         }
+        if (set)
+        {
+            frameRate = 1f / Time.deltaTime;
+            xRotation -= mouseY;
+            if (xRotation > 90f)
+            {
+                xRotation = 90f;
+            }
+            else if (xRotation < -90f)
+            {
+                xRotation = -90f;
+            }
 
-
+            transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+            playerBody.Rotate(Vector3.up * mouseX);
+        }
     }
 
     private IEnumerator SetSensitivity()
     {
         while (true)
         {
-            if(pauseHandler.isPaused != true)
-            {
-                frameCount = 0;
-                yield return new WaitForSeconds(frameCheckInterval);
-                float averageFps = frameCount / 1.0f;
-                mouseSensitivity = (Mathf.Round(averageFps / 1.5f) * multiplier);
-            }
-
-          //  Debug.Log("Average FPS over the last second: " + averageFps);
+            frameCount = 0;
+            yield return new WaitForSeconds(frameCheckInterval);
+            float averageFps = frameCount / 1.0f;
+            mouseSensitivity = (Mathf.Round(averageFps / 1.5f) * multiplier);
         }
     }
     public void SetSwimActive(bool value)

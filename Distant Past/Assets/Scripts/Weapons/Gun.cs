@@ -5,14 +5,15 @@ using UnityEngine.UI;
 public class Gun : MonoBehaviour
 {
     [SerializeField] GunManager manager;
-    public Image gunImage;
+    public int gunImage;
     public bool locked;
 
     public int type;
     public int shotCount;
     [Tooltip("1 - 60 for how many shoots per second")]
     public float fireRate;
-    public Energy energy;
+    // 0 = blue, 1 = yellow, 2 = green
+    public int energy;
     Transform cam;
 
     public float aimFOV = 30;
@@ -45,14 +46,10 @@ public class Gun : MonoBehaviour
 
     public void Shoot()
     {
-        if(energy.trueRechargeTime > 0)
-        {
-            return;
-        }
-        if(energy.currentEnergy <= minimal)
-        {
-            return;
-        }
+        if (energy == 0 && (manager.blue.trueRechargeTime > 0 || manager.blue.currentEnergy <= minimal)) return;
+        if (energy == 1 && (manager.yellow.trueRechargeTime > 0 || manager.yellow.currentEnergy <= minimal)) return;
+        if (energy == 2 && (manager.green.trueRechargeTime > 0 || manager.green.currentEnergy <= minimal)) return;
+
 
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
         RaycastHit hit;
@@ -72,18 +69,17 @@ public class Gun : MonoBehaviour
         bullet.Play();
 
         GameObject soundobject = Instantiate(soundPrefab);
-        energy.UseEnergy(energyPerShot);
+        if (energy == 0) manager.blue.UseEnergy(energyPerShot); else if (energy == 1) 
+            manager.yellow.UseEnergy(energyPerShot); else if (energy == 2) manager.green.UseEnergy(energyPerShot);
 
     }
 
     public void Unlock()
     {
-        gunImage.gameObject.SetActive(true);
         locked = false;
     }
     public void Lock()
     {
-        gunImage.gameObject.SetActive(false);
         locked = true;
     }
 

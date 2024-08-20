@@ -18,13 +18,9 @@ public class KeaPlayer : MonoBehaviour
     RenderTexture mainTextRetro;
     RenderTexture gunTextRetro;
     bool retro;
-    List<GameObject> scopes;
 
     Health playerHealth;
     Slider healthSlider;
-    Energy blueEnergy;
-    Energy yellowEnergy;
-    Energy greenEnergy;
 
     Slider expSlider;
     TextMeshProUGUI expInfo;
@@ -56,11 +52,12 @@ public class KeaPlayer : MonoBehaviour
         expInfo.text = "LVL: " + currentLevel + " / EXP: " + Mathf.RoundToInt(currentExp);
     }
     public void SetDisplay(Slider health, Energy blue, Energy yellow, Energy green, Slider expslider, TextMeshProUGUI expinfo,
-        RenderTexture maintext, RenderTexture guntext, RenderTexture maintextretro, RenderTexture guntextretro,RawImage maindisplay,  RawImage gundisplay, GameObject crosshair, List<GameObject> scopelist)
+        RenderTexture maintext, RenderTexture guntext, RenderTexture maintextretro, RenderTexture guntextretro,RawImage maindisplay,  RawImage gundisplay, GameObject crosshair)
     {
-        healthSlider = health; blueEnergy = blue; yellowEnergy = yellow; greenEnergy = green; expSlider = expslider; expInfo = expinfo;
+        GunManager gunmanager = GetComponentInChildren<GunManager>();
+        healthSlider = health; gunmanager.blue = blue; gunmanager.yellow = yellow; gunmanager.green = green; expSlider = expslider; expInfo = expinfo;
         mainText = maintext; gunText = guntext; mainTextRetro = maintextretro; gunTextRetro = guntextretro;mainDisplay = maindisplay; gunDisplay = gundisplay; 
-        crossHairMain = crosshair; scopes = new List<GameObject>(scopelist);
+        crossHairMain = crosshair; 
 
         if (retro)
         {
@@ -76,6 +73,14 @@ public class KeaPlayer : MonoBehaviour
             mainDisplay.texture = mainText;
             gunDisplay.texture = gunText;
         }
+    }
+    public void SetInteractor(ImageModifier modifier)
+    {
+        GetComponentInChildren<Interactor>().SetModifier(modifier);
+    }
+    public void SetScopes(List<Image> gunImages)
+    {
+        GetComponentInChildren<GunManager>().scopeImages = gunImages;
     }
     public string GetPlayerName()
     {
@@ -103,10 +108,7 @@ public class KeaPlayer : MonoBehaviour
     {
         healthSlider.value = playerHealth.currentHealth;
     }
-    public void OffScopes()
-    {
-        //turn off all scopes
-    }
+
     public void GainExp(int value)
     {
         StartCoroutine(GainExpCoroutine(value));

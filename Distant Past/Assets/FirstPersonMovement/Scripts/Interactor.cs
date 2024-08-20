@@ -4,16 +4,28 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Interactor : MonoBehaviour
 {
-    [SerializeField] ImageModifier modifier;
+    
     [SerializeField] LayerMask interactableLayerMask;
+    ImageModifier modifier;
     Interactable interactable;
-
+    public void SetModifier(ImageModifier imagemodifier)
+    {
+        modifier = imagemodifier;
+    }
     void Update()
     {
-        float interactDistance = 2f;
-        if(Physics.Raycast(transform.position, transform.forward, out RaycastHit raycastHit, interactDistance, interactableLayerMask))
+        Interact();
+    }
+    void Interact()
+    {
+        if(modifier == null)
         {
-            if(raycastHit.transform.TryGetComponent(out Interactable newInteractable))
+            return;
+        }
+        float interactDistance = 2f;
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit raycastHit, interactDistance, interactableLayerMask))
+        {
+            if (raycastHit.transform.TryGetComponent(out Interactable newInteractable))
             {
                 if (!newInteractable.enabled)
                 {
@@ -29,19 +41,19 @@ public class Interactor : MonoBehaviour
                     interactable.SetInteractor(null);
                     interactable = newInteractable;
                 }
-                if(interactable.interactIcon != 0)
+                if (interactable.interactIcon != 0)
                 {
                     modifier.ChangeIcon(interactable.interactIcon);
-                    
+
                 }
                 else
                 {
-                    modifier.ChangeIcon(1);
+                    modifier.ChangeIcon(2);
                 }
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     interactable.onInteract.Invoke();
-                    if(interactable.TryGetComponent(out AudioSource audioSource))
+                    if (interactable.TryGetComponent(out AudioSource audioSource))
                     {
                         audioSource.Play();
                     }
@@ -57,5 +69,4 @@ public class Interactor : MonoBehaviour
             modifier.ChangeIcon(0);
         }
     }
-
 }

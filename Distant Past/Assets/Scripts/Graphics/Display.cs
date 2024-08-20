@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -21,7 +22,8 @@ public class Display : MonoBehaviour
     [SerializeField] RawImage onePMainDisplay;
     [SerializeField] RawImage onePGunDisplay;
     [SerializeField] GameObject onePCrossHair;
-    [SerializeField] List<GameObject> onePScopes;
+    [SerializeField] List<Image> onePScopes;
+    [SerializeField] ImageModifier onePInteractModifier;
 
     [SerializeField] List<Slider> twoPHealthSliders;
     [SerializeField] List<Energy> twoPBlueEnergies;
@@ -36,7 +38,8 @@ public class Display : MonoBehaviour
     [SerializeField] List<RawImage> twoPMainDisplay;
     [SerializeField] List<RawImage> twoPGunDisplay;
     [SerializeField] List<GameObject> twoPCrossHair;
-    [SerializeField] List<GameObject> twoPScopes;
+    [SerializeField] List<Image> twoPScopes;
+    [SerializeField] List<ImageModifier> twoPInteractModifier;
     public void AddPlayer(KeaPlayer player)
     {
         players.Add(player);
@@ -54,15 +57,23 @@ public class Display : MonoBehaviour
                 if (i == 0)
                 {
                     player.SetDisplay(onePHealthSlider, onePBlueEnergy, onePYellowEnergy, onePGreenEnergy, onePExpSlider, onePExpInfo, onePMainText, onePGunText, 
-                        onePMainTextRetro, onePGunTextRetro,onePMainDisplay, onePGunDisplay,onePCrossHair, onePScopes);
+                        onePMainTextRetro, onePGunTextRetro,onePMainDisplay, onePGunDisplay,onePCrossHair);
+                    player.SetScopes(onePScopes);
+                    player.SetInteractor(onePInteractModifier);
                 }
                 if (i == 1)
                 {
                     players[0].SetDisplay(twoPHealthSliders[0], twoPBlueEnergies[0], twoPYellowEnergies[0], twoPGreenEnergies[0], twoPExpSliders[0], twoPExpInfo[0],
-                        twoPMainTexts[0], twoPGunTexts[0], twoPMainTextRetros[0], twoPGunTextRetros[0],twoPMainDisplay[0], twoPGunDisplay[0], twoPCrossHair[0], twoPScopes);
+                        twoPMainTexts[0], twoPGunTexts[0], twoPMainTextRetros[0], twoPGunTextRetros[0],twoPMainDisplay[0], twoPGunDisplay[0], twoPCrossHair[0]);
+                    List<Image> scopelist = twoPScopes.Take(10).ToList();
+                    players[0].SetScopes(scopelist);
+                    players[0].SetInteractor(twoPInteractModifier[0]);
 
                     player.SetDisplay(twoPHealthSliders[1], twoPBlueEnergies[1], twoPYellowEnergies[1], twoPGreenEnergies[1], twoPExpSliders[1], twoPExpInfo[1],
-                        twoPMainTexts[1], twoPGunTexts[1], twoPMainTextRetros[1], twoPGunTextRetros[1],twoPMainDisplay[1], twoPGunDisplay[1],twoPCrossHair[1], twoPScopes);
+                        twoPMainTexts[1], twoPGunTexts[1], twoPMainTextRetros[1], twoPGunTextRetros[1],twoPMainDisplay[1], twoPGunDisplay[1],twoPCrossHair[1]);
+                    List<Image> scopelist2 = twoPScopes.Skip(Mathf.Max(0, twoPScopes.Count - 10)).ToList();
+                    players[0].SetScopes(scopelist2);
+                    players[0].SetInteractor(twoPInteractModifier[1]);
                 }
             }
         }
