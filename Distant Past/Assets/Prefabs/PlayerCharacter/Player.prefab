@@ -264,13 +264,14 @@ MonoBehaviour:
   shotCount: 0
   fireRate: 0.09
   energy: 0
+  cam: {fileID: 0}
   aimFOV: 30
   damage: 15
   energyPerShot: 10
   minimal: 0
   hittable:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 1601
   bullet: {fileID: 6522436256644676612}
   baseAngle: 2
   aimAngle: 0.4
@@ -460,19 +461,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guns: []
-  gunImages:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  scopeImages: []
   current: 0
   soundPrefab: {fileID: 7102267724139364685, guid: 1ffe9fdf966a1fb44b9813ed5160ca5d, type: 3}
-  settingsHandler: {fileID: 0}
   blue: {fileID: 0}
   yellow: {fileID: 0}
   green: {fileID: 0}
@@ -1009,13 +1000,14 @@ MonoBehaviour:
   shotCount: 0
   fireRate: 0.22
   energy: 0
+  cam: {fileID: 0}
   aimFOV: 30
   damage: 22
   energyPerShot: 10
   minimal: 10
   hittable:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 1601
   bullet: {fileID: 6748807678184783861}
   baseAngle: 2
   aimAngle: 0.8
@@ -1076,13 +1068,14 @@ MonoBehaviour:
   shotCount: 0
   fireRate: 0.125
   energy: 2
+  cam: {fileID: 0}
   aimFOV: 35
   damage: 6
   energyPerShot: 50
   minimal: 0
   hittable:
     serializedVersion: 2
-    m_Bits: 1089
+    m_Bits: 1601
   bullet: {fileID: 3483577826160036511}
   baseAngle: 1.5
   aimAngle: 0.8
@@ -1517,13 +1510,14 @@ MonoBehaviour:
   shotCount: 0
   fireRate: 0
   energy: 1
+  cam: {fileID: 0}
   aimFOV: 25
   damage: 30
   energyPerShot: 30
   minimal: 0
   hittable:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 1601
   bullet: {fileID: 5067064855854447879}
   baseAngle: 2
   aimAngle: 0.4
@@ -1584,13 +1578,14 @@ MonoBehaviour:
   shotCount: 0
   fireRate: 0.125
   energy: 1
+  cam: {fileID: 0}
   aimFOV: 10
   damage: 130
   energyPerShot: 60
   minimal: 10
   hittable:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 1601
   bullet: {fileID: 155183100502070145}
   baseAngle: 2
   aimAngle: 0.1
@@ -1651,13 +1646,14 @@ MonoBehaviour:
   shotCount: 0
   fireRate: 10
   energy: 0
+  cam: {fileID: 0}
   aimFOV: 30
   damage: 10
   energyPerShot: 8
   minimal: 0
   hittable:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 1601
   bullet: {fileID: 5925496972089621168}
   baseAngle: 2
   aimAngle: 0.6
@@ -1718,13 +1714,14 @@ MonoBehaviour:
   shotCount: 0
   fireRate: 0.125
   energy: 1
+  cam: {fileID: 0}
   aimFOV: 20
   damage: 10
   energyPerShot: 10
   minimal: 0
   hittable:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 1601
   bullet: {fileID: 4384509318430880647}
   baseAngle: 2
   aimAngle: 0.3
@@ -1879,13 +1876,14 @@ MonoBehaviour:
   shotCount: 0
   fireRate: 1
   energy: 2
+  cam: {fileID: 0}
   aimFOV: 35
   damage: 200
   energyPerShot: 80
   minimal: 20
   hittable:
     serializedVersion: 2
-    m_Bits: 1089
+    m_Bits: 1601
   bullet: {fileID: 8905874767720338921}
   baseAngle: 1.5
   aimAngle: 0.9
@@ -3903,7 +3901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits
-      value: 65
+      value: 1601
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.ctime0
@@ -4386,7 +4384,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits
-      value: 65
+      value: 1601
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: InitialModule.gravityModifier.scalar
@@ -5183,7 +5181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits
-      value: 65
+      value: 1601
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.ctime0
@@ -5580,7 +5578,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits
-      value: 65
+      value: 1601
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: InitialModule.gravityModifier.scalar
@@ -5989,7 +5987,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits
-      value: 65
+      value: 1601
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.ctime0
@@ -6440,7 +6438,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits
-      value: 65
+      value: 1601
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.ctime0
@@ -6959,7 +6957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits
-      value: 65
+      value: 1601
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.ctime0
@@ -7524,7 +7522,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: CollisionModule.collidesWith.m_Bits
-      value: 65
+      value: 1601
       objectReference: {fileID: 0}
     - target: {fileID: 4251402933011863786, guid: 95b6e6f90bcc60647bb0d96111f6eb3c, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.ctime0

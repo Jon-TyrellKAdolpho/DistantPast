@@ -14,7 +14,8 @@ public class Gun : MonoBehaviour
     public float fireRate;
     // 0 = blue, 1 = yellow, 2 = green
     public int energy;
-    Transform cam;
+    [HideInInspector]
+    public Transform cam;
 
     public float aimFOV = 30;
 
@@ -37,8 +38,8 @@ public class Gun : MonoBehaviour
     Transform target;
     private void Start()
     {
-        target = FindObjectOfType<GunManager>().target;
-        cam = FindObjectOfType<FirstPersonLook>().GetComponent<Camera>().transform;
+        target = manager.target;
+        cam = GetComponentInParent<KeaPlayer>().gunCam.transform;
         bullet.GetComponent<Bullet>().SetDamage(damage);
         var shapemodule = bullet.shape;
         shapemodule.angle = baseAngle;
@@ -56,6 +57,7 @@ public class Gun : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, hittable))
         {
             target.position = hit.point;
+            Debug.Log(target.name);
         }
         else
         {

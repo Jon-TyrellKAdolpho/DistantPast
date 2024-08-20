@@ -8,7 +8,8 @@ public class KeaPlayer : MonoBehaviour
     string playerName;
 
     [SerializeField] Camera mainCam;
-    [SerializeField] Camera gunCam;
+
+    public Camera gunCam;
 
     RawImage mainDisplay;
     RawImage gunDisplay;
@@ -74,13 +75,15 @@ public class KeaPlayer : MonoBehaviour
             gunDisplay.texture = gunText;
         }
     }
+
     public void SetInteractor(ImageModifier modifier)
     {
         GetComponentInChildren<Interactor>().SetModifier(modifier);
     }
     public void SetScopes(List<Image> gunImages)
     {
-        GetComponentInChildren<GunManager>().scopeImages = gunImages;
+        GunManager gunmanager = GetComponentInChildren<GunManager>();
+        gunmanager.scopeImages = gunImages;
     }
     public string GetPlayerName()
     {

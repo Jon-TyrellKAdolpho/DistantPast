@@ -18,6 +18,8 @@ public class SaveManager : MonoBehaviour
         playerCount = Mathf.Max(1, PlayerSaves.playerTwo != "" ? 2 : 1, 
             PlayerSaves.playerThree != "" ? 3 : 1, PlayerSaves.playerFour != "" ? 4 : 1);
 
+
+        Debug.Log("PlayerCount: " + playerCount);
         foreach (Transform child in transform)
         {
             SpawnPoint spawnpoint = child.GetComponent<SpawnPoint>();
@@ -31,23 +33,25 @@ public class SaveManager : MonoBehaviour
         {
             Spawn(i);
         }
-        for (int i = 0; i < playerCount; i++)
-        {
-            GameObject playerInput = Instantiate(playerInputPrefab);
-        }
 
     }
     public void Spawn(int which)
     {
-        Transform spawnpoint = SpawnPoint();
-        GameObject playerprefab = Instantiate(playerPrefab, spawnpoint);
+        GameObject playerprefab = Instantiate(playerPrefab, spawnPoints[0]);
         KeaPlayer player = playerprefab.GetComponent<KeaPlayer>();
+        FindObjectOfType<PlayerInputManager>().JoinPlayer(
+            playerIndex: which + 1, // Assign this player to index 1
+            splitScreenIndex: 0, // Assign this player to the first split-screen position
+            controlScheme: "Gamepad", // Use the "Gamepad" control scheme
+            pairWithDevice: Gamepad.all.Count > 0 ? Gamepad.all[which] : null // Pair with the first available gamepad
+        );
         playerprefab.transform.SetParent(null);
         player.SetPlayerName(which);
 
     }
     public Transform SpawnPoint()
     {
+        Debug.Log("Spawns + " + spawnPoints.Count);
         int which = Random.Range(0, spawnPoints.Count);
         return spawnPoints[which];
     }

@@ -72,8 +72,8 @@ public class Display : MonoBehaviour
                     player.SetDisplay(twoPHealthSliders[1], twoPBlueEnergies[1], twoPYellowEnergies[1], twoPGreenEnergies[1], twoPExpSliders[1], twoPExpInfo[1],
                         twoPMainTexts[1], twoPGunTexts[1], twoPMainTextRetros[1], twoPGunTextRetros[1],twoPMainDisplay[1], twoPGunDisplay[1],twoPCrossHair[1]);
                     List<Image> scopelist2 = twoPScopes.Skip(Mathf.Max(0, twoPScopes.Count - 10)).ToList();
-                    players[0].SetScopes(scopelist2);
-                    players[0].SetInteractor(twoPInteractModifier[1]);
+                    players[1].SetScopes(scopelist2);
+                    players[1].SetInteractor(twoPInteractModifier[1]);
                 }
             }
         }
