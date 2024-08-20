@@ -2931,7 +2931,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetFrameRate: 60
-  multiplier: 6
+  multiplier: 1.5
   mouseSensitivity: 1
   senseMultiplier: 1.1
   senseDivider: 0.9

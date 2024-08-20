@@ -4,11 +4,12 @@ using UnityEngine;
 using TMPro;
 public class FirstPersonLook : MonoBehaviour
 {
+    GunManager gunmanager;
     [SerializeField] int targetFrameRate = 30;
     [SerializeField] float multiplier;
     [SerializeField] float mouseSensitivity = 10f;
-    float maxSensitivity;
-    float minSensitivity;
+    float xDampner = .5f;
+    float aimDampner = .7f;
     // if the look axis is more than .8f
     [SerializeField] float senseMultiplier = 1.1f;
     // if the axis is less than .125f
@@ -31,13 +32,12 @@ public class FirstPersonLook : MonoBehaviour
     [SerializeField] float frameRate;
     void Start()
     {
+        gunmanager = GetComponentInChildren<GunManager>();
         Cursor.lockState = CursorLockMode.Locked;
         xRotation = 0f;
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
        // Application.targetFrameRate = targetFrameRate;
         mouseSensitivity = ((targetFrameRate * 3.33f) * multiplier);
-        maxSensitivity = mouseSensitivity * senseMultiplier;
-        minSensitivity = mouseSensitivity * senseDivider;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         StartCoroutine(CheckFramerate());
@@ -45,12 +45,27 @@ public class FirstPersonLook : MonoBehaviour
     }
     public void SetMouseX(float value)
     {
-        
-        mouseX = value * (mouseSensitivity / frameRate);
+        if (!gunmanager.aiming)
+        {
+            mouseX = value * (mouseSensitivity / frameRate);
+        }
+        else
+        {
+            mouseX = value * ((mouseSensitivity * aimDampner) / frameRate); 
+        }
+
     }
     public void SetMouseY(float value)
     {
-        mouseY = value * (mouseSensitivity / frameRate);
+        if (!gunmanager.aiming)
+        {
+            mouseY = value * ((mouseSensitivity * xDampner) / frameRate);
+        }
+        else
+        {
+            mouseY = value * (((mouseSensitivity * xDampner) * aimDampner) / frameRate);
+        }
+
     }
 
     void Update()
@@ -75,11 +90,11 @@ public class FirstPersonLook : MonoBehaviour
 
             
             Vector3 adjustedMouseInput = new Vector3(mouseX, mouseY, 0f);
-            Quaternion targetRotation = Quaternion.Euler(xRotation, 0f, 0f);
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRotation, Time.deltaTime * 12f);
+
+            transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
             playerBody.Rotate(Vector3.up * adjustedMouseInput.x);
-          //  AimAssist();
+
         }
     }
 
