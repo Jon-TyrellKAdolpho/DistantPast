@@ -14,7 +14,10 @@ public class SaveManager : MonoBehaviour
 
     void Start()
     {
-
+        if(loadoutGuns != "")
+        {
+            PlayerPrefs.SetString("Loadout", loadoutGuns);
+        }
         playerCount = Mathf.Max(1, PlayerSaves.playerTwo != "" ? 2 : 1, 
             PlayerSaves.playerThree != "" ? 3 : 1, PlayerSaves.playerFour != "" ? 4 : 1);
 

@@ -331,7 +331,7 @@
                     "id": "87eabc9d-54e3-4a1b-b299-502b524dc2a1",
                     "path": "1DAxis",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "AxisDeadzone",
                     "groups": "",
                     "action": "LookX",
                     "isComposite": true,

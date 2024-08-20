@@ -20,7 +20,7 @@ public class KeaPlayer : MonoBehaviour
     RenderTexture gunTextRetro;
     bool retro;
 
-    Health playerHealth;
+    [SerializeField] Health playerHealth;
     Slider healthSlider;
 
     Slider expSlider;
@@ -37,9 +37,6 @@ public class KeaPlayer : MonoBehaviour
     {
         FindObjectOfType<Display>().AddPlayer(this);
 
-        playerHealth = GetComponent<Health>();
-        healthSlider.maxValue = playerHealth.maxHealth;
-        healthSlider.value = playerHealth.currentHealth;
 
         expToNextLevel = new int[maxLevel];
         expToNextLevel[1] = 1000;
@@ -58,7 +55,9 @@ public class KeaPlayer : MonoBehaviour
         GunManager gunmanager = GetComponentInChildren<GunManager>();
         healthSlider = health; gunmanager.blue = blue; gunmanager.yellow = yellow; gunmanager.green = green; expSlider = expslider; expInfo = expinfo;
         mainText = maintext; gunText = guntext; mainTextRetro = maintextretro; gunTextRetro = guntextretro;mainDisplay = maindisplay; gunDisplay = gundisplay; 
-        crossHairMain = crosshair; 
+        crossHairMain = crosshair;
+        healthSlider.maxValue = playerHealth.maxHealth;
+        healthSlider.value = playerHealth.currentHealth;
 
         if (retro)
         {

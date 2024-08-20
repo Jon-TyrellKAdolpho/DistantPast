@@ -786,7 +786,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -2194,6 +2194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCam: {fileID: 4593441903179413935}
   gunCam: {fileID: 1521337736}
+  playerHealth: {fileID: 4360973374029881280}
   levelUpSoundDrop: {fileID: 7102267724139364685, guid: 28258f862ebc7ba42b76015abde7761c, type: 3}
   spendPoints: 0
   expToNextLevel: 
@@ -2788,7 +2789,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4593441903179413929}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.012827826, y: 0, z: 0, w: 0.99991775}
   m_LocalPosition: {x: 0, y: 1.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2800,7 +2801,7 @@ Transform:
   - {fileID: 1505924354}
   m_Father: {fileID: 4593441901859547673}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -1.47, y: 0, z: 0}
 --- !u!20 &4593441903179413935
 Camera:
   m_ObjectHideFlags: 0
@@ -2931,13 +2932,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetFrameRate: 60
   multiplier: 6
-  mouseSensitivity: 2
+  mouseSensitivity: 1
+  senseMultiplier: 1.1
+  senseDivider: 0.9
   playerBody: {fileID: 4593441901859547673}
   xRotation: 0
   mouseX: 0
   mouseY: 0
   frameCheckInterval: 0.5
   swimVFX: {fileID: 8620820523070595630}
+  aimAssistRadius: 5
+  aimAssistStrength: 1
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 512
   frameRate: 0
 --- !u!114 &810841731087356076
 MonoBehaviour:

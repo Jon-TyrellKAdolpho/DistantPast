@@ -107,7 +107,7 @@ public class MusicManager : MonoBehaviour
         audioSource.volume = targetVolume;
         if (!play)
         {
-            Debug.Log("Stopping audio source: " + audioSource.clip.name);
+         //   Debug.Log("Stopping audio source: " + audioSource.clip.name);
             audioSource.Stop();
         }
     }

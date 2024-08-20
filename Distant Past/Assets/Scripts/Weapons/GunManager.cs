@@ -48,10 +48,13 @@ public class GunManager : MonoBehaviour
             }
         }
 
-        if (!PlayerPrefs.HasKey(guns[0].name + "Locked"))
+        if (PlayerPrefs.HasKey("Loadout"))
         {
-            Loadout();
-            return;
+            if(PlayerPrefs.GetString("Loadout") != "")
+            {
+                Loadout();
+                return;
+            }
         }
         for (int i = 0; i < guns.Count; i++)
         {
@@ -174,6 +177,7 @@ public class GunManager : MonoBehaviour
     public void CycleWeapon()
     {
         ExitAim();
+        shooting = false;
         if (guns.Count == 0)
         {
             Debug.Log("No weapons available.");
@@ -189,15 +193,13 @@ public class GunManager : MonoBehaviour
             {
                 current = 0;
             }
-
             gun = guns[current];
-
-            // Make sure energy isn't depleted.
-            if ((gun.energy == 0 && blue.currentEnergy <= 0) || (gun.energy == 1 &&
-                yellow.currentEnergy <= 0) || (gun.energy == 2 && green.currentEnergy <= 0)) return;
-
             if (gun != null && gun.locked == false)
             {
+
+                if (gun.energy == 0) { if (blue.currentEnergy <= 0) { return; } }
+                if (gun.energy == 1) { if (yellow.currentEnergy <= 0) { return; } }
+                if (gun.energy == 2) { if (green.currentEnergy <= 0) { return; } }
                 if (first != false)
                 {
                     Instantiate(soundPrefab, transform.position, Quaternion.identity);
@@ -272,7 +274,6 @@ public class GunManager : MonoBehaviour
         GunManager gunManager = FindObjectOfType<GunManager>();
         foreach (string weapon in weaponArray)
         {
-    
             gunManager.UnlockGun(weapon);
         }
         CycleWeapon();

@@ -57,7 +57,6 @@ public class Gun : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, hittable))
         {
             target.position = hit.point;
-            Debug.Log(target.name);
         }
         else
         {
